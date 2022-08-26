@@ -8,21 +8,21 @@ const createUser = async (req,res) =>{
         const {name} = req.body
     
         if(!name){
-            return res.send(ERRORMSG.missingParam)
+            return res.status(400).send(ERRORMSG.missingParam)
         }
         const userExist = await User.find({name})
         if(userExist.length !=0){
-            return res.status(400).send({status:400,msg:"username already exists"})
+            return res.status(400).send({msg:"username already exists"})
         }
 
         const user = await User.create({
             name 
         })
-        res.send({status:200,msg:'user created'}) 
+        res.status(200).send({msg:'user created'}) 
     } catch (error) {
         
         console.log(error.message)
-        res.send(ERRORMSG.error)
+        res.status(400).send(ERRORMSG.error)
     }
 }
 
@@ -32,14 +32,14 @@ const getAllFoodFromDb = async (req,res)=>{
         const data = await FoodDetail.find({})
 
         if(!data){
-            return res.send({status:400,msg:"something went wrong"})
+            return res.status(400).send({msg:"something went wrong"})
         }
 
-        return res.send({status:200,msg:"successful",data})
+        return res.status(200).send({msg:"successful",data})
 
     } catch (error) {
          console.log(error.message)
-        res.send(ERRORMSG.error)
+        res.status(400).send(ERRORMSG.error)
     }
 }
 
@@ -49,13 +49,13 @@ const addFoodToDb = async(req,res)=>{
         
         if(!name || !calories || !protein || !carb || !fat){
 
-            return res.send(ERRORMSG.missingParam)
+            return res.status(400).send(ERRORMSG.missingParam)
         }
 
         const foodExist = await FoodDetail.findOne({name})
         
         if(foodExist){
-            return res.send({status:400,msg:'food already exist'})
+            return res.status(400).send({msg:'food already exist'})
         }
 
         const food = await FoodDetail.create({
@@ -66,12 +66,12 @@ const addFoodToDb = async(req,res)=>{
             fat
         })
 
-        return res.send({status:200,msg:'food added'})
+        return res.status(200).send({msg:'food added'})
 
         
     } catch (error) {
         console.log(error)
-        return res.send(ERRORMSG.error)
+        return res.status(400).send(ERRORMSG.error)
     }
 }
 
@@ -81,25 +81,25 @@ const deleteFoodFromDb = async (req,res)=>{
         const {foodId} = req.body
 
         if(!foodId){
-            return res.send(ERRORMSG.missingParam)
+            return res.status(400).send(ERRORMSG.missingParam)
         }
 
         const foodExist = await FoodDetail.findById(foodId)
         
         if(!foodExist){
-            return res.send({status:400,msg:'food does not exist'})
+            return res.status(400).send({msg:'food does not exist'})
         }
         const delFood = await FoodDetail.findByIdAndDelete(foodId)
 
         if(!delFood){
-            return res.send({status:400,msg:'food could not be deleted'})
+            return res.status(400).send({msg:'food could not be deleted'})
         }
 
-        return res.send({status:200,msg:'food deleted'})
+        return res.status(200).send({msg:'food deleted'})
         
     } catch (error) {
          console.log(error)
-        return res.send(ERRORMSG.error)
+        return res.status(400).send(ERRORMSG.error)
     }
 }
 
@@ -110,13 +110,13 @@ const updateFoodFromDb = async (req,res) =>{
         const {foodId,name,calories,protein,carb,fat} = req.body
 
         if(!foodId){
-            return res.send(ERRORMSG.missingParam)
+            return res.status(400).send(ERRORMSG.missingParam)
         }
 
         const foodExist = await FoodDetail.findById(foodId)
 
         if(!foodExist){
-            return res.send({status:400,msg:'food does not exist'})
+            return res.status(400).send({msg:'food does not exist'})
         }
 
         const newfood = await FoodDetail.findByIdAndUpdate(foodId,{
@@ -127,11 +127,11 @@ const updateFoodFromDb = async (req,res) =>{
             fat: !fat? foodExist.fat : fat
         },{new:true})
 
-        return res.send({status:200,msg:'food updated'})
+        return res.status(200).send({msg:'food updated'})
 
     } catch (error) {
         console.log(error)
-        return res.send(ERRORMSG.error)
+        return res.status(400).send(ERRORMSG.error)
     }
 }
 
@@ -143,7 +143,7 @@ const addFoodToUserHistory = async (req,res)=>{
 
 
         if(!userId || !name || !calories || !protein || !fat || !foodType){
-            return res.send(ERRORMSG.missingParam)
+            return res.status(400).send(ERRORMSG.missingParam)
         }
         
         userhistory = await UserHistory.findOne({userId,date: DateCreator()})
@@ -156,7 +156,7 @@ const addFoodToUserHistory = async (req,res)=>{
         }
 
         if(!userhistory){
-                return res.send({status:400,msg:"something went wrongddddd"})
+                return res.status(400).send({msg:"something went wrongddddd"})
         }
 
         console.log(userhistory)
@@ -185,11 +185,11 @@ const addFoodToUserHistory = async (req,res)=>{
 
 
 
-        res.send({status:200,msg:"successful",data:addFood})
+        res.status(200).send({msg:"successful",data:addFood})
         
     } catch (error) {
          console.log(error)
-        return res.send(ERRORMSG.error)
+        return res.status(400).send(ERRORMSG.error)
     }
 }
 
@@ -199,7 +199,7 @@ const removeFoodFromUserHistory = async (req,res)=>{
             const {userId,logId} = req.body
 
             if(!logId){
-                return res.send(ERRORMSG.missingParam)
+                return res.status(400).send(ERRORMSG.missingParam)
             }
 
             const userhistory = await UserHistory.findOne({userId,date:DateCreator()})
@@ -207,7 +207,7 @@ const removeFoodFromUserHistory = async (req,res)=>{
     
 
             if(!userhistory){
-                return res.send({status:400,msg:"could not delete record"})
+                return res.status(400).send({msg:"could not delete record"})
             }
 
             var foodConsumed;
@@ -220,7 +220,7 @@ const removeFoodFromUserHistory = async (req,res)=>{
             })
 
             if(!foodConsumed){
-                return res.send({status:400,msg:"could not find record"})
+                return res.status(400).send({msg:"could not find record"})
             }
 
             console.log(foodConsumed)
@@ -239,11 +239,11 @@ const removeFoodFromUserHistory = async (req,res)=>{
             },{new:true})
 
 
-            return res.send({status:200,msg:'successful',data})
+            return res.status(200).send({msg:'successful',data})
 
         } catch (error) {
             console.log(error)
-            return res.send(ERRORMSG.error)
+            return res.status(400).send(ERRORMSG.error)
         }
 }
 
@@ -255,7 +255,7 @@ const getDayStats = async (req,res)=>{
         var userhistory =null;
 
         if(!userId){
-            return res.send(ERRORMSG.missingParam)
+            return res.status(400).send(ERRORMSG.missingParam)
         }
         
         userhistory = await UserHistory.findOne({userId,date: DateCreator()})
@@ -268,14 +268,14 @@ const getDayStats = async (req,res)=>{
         }
 
         if(!userhistory){
-                return res.send({status:400,msg:"something went wrong"})
+                return res.status(400).send({msg:"something went wrong"})
         }
 
-        return res.send({status:200,msg:"success",data:userhistory})
+        return res.status(200).send({status:200,msg:"success",data:userhistory})
 
     } catch (error) {
         console.log(error)
-        return res.send(ERRORMSG.error)
+        return res.status(400).send(ERRORMSG.error)
     }
 }
 
@@ -284,11 +284,11 @@ const test = async(req,res)=>{
 
     try {
         
-        res.send({status:200,msg:"workinggggg"})
+        res.status(200).send({msg:"workinggggg"})
 
     } catch (error) {
         console.log(error)
-        return res.send(ERRORMSG.error)
+        return res.status(400).send(ERRORMSG.error)
     }
 }
 
