@@ -12,7 +12,7 @@ router.patch("/db-food",updateFoodFromDb)
 router.post("/user-food",addFoodToUserHistory)
 router.delete("/user-food",removeFoodFromUserHistory)
 
-router.post("/day-stats",getDayStats)
+router.get("/day-stats/:id",getDayStats)
 
 router.get("/test",test)
 

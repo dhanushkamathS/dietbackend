@@ -251,7 +251,7 @@ const removeFoodFromUserHistory = async (req,res)=>{
 const getDayStats = async (req,res)=>{
     try {
         
-        const {userId} = req.body
+        const userId = req.params.userId
         var userhistory =null;
 
         if(!userId){
