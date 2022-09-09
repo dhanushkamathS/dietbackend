@@ -147,11 +147,12 @@ const addFoodToUserHistory = async (req,res)=>{
 
 
         if(!userId || !name || !calories || !protein || !fat || !foodType){
+            // return res.send("missins")
             return res.status(400).send(ERRORMSG.missingParam)
         }
         
         userhistory = await UserHistory.findOne({userId,date: DateCreator()})
-        console.log(userhistory)
+        // console.log(userhistory)
         
         if(!userhistory){
             console.log("runnn")
@@ -177,11 +178,11 @@ const addFoodToUserHistory = async (req,res)=>{
                                 fatConsumed:fat
                                 }
                     },
-            statOfday : {
-                calories:userhistory.statOfday.calories+calories,
-                carb:userhistory.statOfday.carb+carb,
-                protein:userhistory.statOfday.protein+protein,
-                fat:userhistory.statOfday.fat+fat
+            statOfDay : {
+                calories:userhistory.statOfDay.calories+calories,
+                carb:userhistory.statOfDay.carb+carb,
+                protein:userhistory.statOfDay.protein+protein,
+                fat:userhistory.statOfDay.fat+fat
             }
             
         },{new:true})
@@ -233,11 +234,11 @@ const removeFoodFromUserHistory = async (req,res)=>{
             const data = await UserHistory.findByIdAndUpdate(userhistory._id,{
                 $pull : {foodConsumed:{_id:logId}},
                 
-                statOfday : {
-                    calories:userhistory.statOfday.calories-foodConsumed.caloriesConsumed,
-                    carb:userhistory.statOfday.carb-foodConsumed.carbConsumed,
-                    protein:userhistory.statOfday.protein-foodConsumed.proteinConsumed,
-                    fat:userhistory.statOfday.fat-foodConsumed.fatConsumed
+                statOfDay : {
+                    calories:userhistory.statOfDay.calories-foodConsumed.caloriesConsumed,
+                    carb:userhistory.statOfDay.carb-foodConsumed.carbConsumed,
+                    protein:userhistory.statOfDay.protein-foodConsumed.proteinConsumed,
+                    fat:userhistory.statOfDay.fat-foodConsumed.fatConsumed
             }
 
             },{new:true})
