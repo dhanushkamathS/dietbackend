@@ -6,7 +6,11 @@ const user = mongoose.Schema({
         required:true,
         unique:true
     },
-    maintainenceCalories:{type:Number}
+    MainCalories:{type:Number},
+    MainCarb:{type:Number,},
+    MainProtein:{type:Number},
+    MainFat:{type:Number}
+    
     
 },{timestamps:true})
 

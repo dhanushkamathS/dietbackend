@@ -5,8 +5,8 @@ const UserHistory = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
    },
-   date:{type:String,unique:true},
-   statOfday:{
+   date:{type:String},
+   statOfDay:{
        calories:{type:Number,default:0},
        carb:{type:Number,default:0},
        protein:{type:Number,default:0},

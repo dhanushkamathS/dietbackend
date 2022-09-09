@@ -5,9 +5,9 @@ const {ERRORMSG}  = require("../utils/errorMsg")
 const {DateCreator} = require('../utils/utils')
 const createUser = async (req,res) =>{
     try {
-        const {name} = req.body
+        const {name,MainCalories,MainCarb,MainProtein,MainFat} = req.body
     
-        if(!name){
+        if(!name|| !MainCalories || !MainCarb || !MainProtein || !MainFat){
             return res.status(400).send(ERRORMSG.missingParam)
         }
         const userExist = await User.find({name})
@@ -16,7 +16,11 @@ const createUser = async (req,res) =>{
         }
 
         const user = await User.create({
-            name 
+            name,
+            MainCalories,
+            MainCarb,
+            MainProtein,
+            MainFat
         })
         res.status(200).send({msg:'user created'}) 
     } catch (error) {
@@ -257,9 +261,8 @@ const getDayStats = async (req,res)=>{
         if(!userId){
             return res.status(400).send(ERRORMSG.missingParam)
         }
-        
+        userMaintainence = await User.findById(userId)
         userhistory = await UserHistory.findOne({userId,date: DateCreator()})
-        console.log(userhistory)
         
         if(!userhistory){
             console.log("runnn")
@@ -271,13 +274,40 @@ const getDayStats = async (req,res)=>{
                 return res.status(400).send({msg:"something went wrong"})
         }
 
-        return res.status(200).send({status:200,msg:"success",data:userhistory})
+        var {foodConsumed,statOfDay,date,_id} = userhistory
+
+        var newFoodConsumed = {
+            breakfast:[],
+            lunch:[],
+            dinner:[]
+        }
+        foodConsumed.map((food)=>{
+            newFoodConsumed[food.foodType].push(food)
+        })       
+     
+        const mainData = {
+            calories : userMaintainence.MainCalories,
+            carb:userMaintainence.MainCarb,
+            protein:userMaintainence.MainProtein,
+            fat:userMaintainence.MainFat
+        }
+
+        const data = {
+            foodConsumed : newFoodConsumed,
+            statOfDay,
+            mainData,
+            date,
+            _id
+        }
+        return res.status(200).send({status:200,msg:"success",data:data})
 
     } catch (error) {
         console.log(error)
         return res.status(400).send(ERRORMSG.error)
     }
 }
+
+
 
 
 const test = async(req,res)=>{
