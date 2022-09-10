@@ -203,7 +203,7 @@ const removeFoodFromUserHistory = async (req,res)=>{
         try {
             const {userId,logId} = req.body
 
-            if(!logId){
+            if(!logId || !userId){
                 return res.status(400).send(ERRORMSG.missingParam)
             }
 
