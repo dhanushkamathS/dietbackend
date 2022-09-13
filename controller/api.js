@@ -144,9 +144,10 @@ const addFoodToUserHistory = async (req,res)=>{
        
         const {userId,name,calories,carb,protein,fat,foodType,grams} = req.body
         var userhistory =null;
-
+        
 
         if(!userId || !name || !calories || !protein || !fat || !foodType){
+            console.log("musis")
             // return res.send("missins")
             return res.status(400).send(ERRORMSG.missingParam)
         }
@@ -199,11 +200,13 @@ const addFoodToUserHistory = async (req,res)=>{
 }
 
 
+
 const removeFoodFromUserHistory = async (req,res)=>{
         try {
             const {userId,logId} = req.body
-
-            if(!logId){
+    
+            if(!logId || !userId){
+                console.log("ase")
                 return res.status(400).send(ERRORMSG.missingParam)
             }
 
@@ -309,12 +312,36 @@ const getDayStats = async (req,res)=>{
 }
 
 
+const getUserId = async(req,res) =>{
+
+    try {
+        const {username} = req.body 
+
+        if(!username){
+            return res.status(200).send(ERRORMSG.missingParam)
+        }
+
+        const user = await User.find({name:username})
+
+        if(!user){
+            return res.status(200).send({
+                msg:"user not found"
+            })
+        }
+        return res.status(200).send({user})
+
+    } catch (error) {
+         console.log(error)
+        return res.status(400).send(ERRORMSG.error)
+    }
+}
+
 
 
 const test = async(req,res)=>{
 
     try {
-        
+        console.log("123")
         res.status(200).send({msg:"workinggggg"})
 
     } catch (error) {
@@ -323,4 +350,4 @@ const test = async(req,res)=>{
     }
 }
 
-module.exports = {createUser,addFoodToDb,deleteFoodFromDb,updateFoodFromDb,addFoodToUserHistory,removeFoodFromUserHistory,getDayStats,getAllFoodFromDb,test}
+module.exports = {createUser,addFoodToDb,deleteFoodFromDb,updateFoodFromDb,addFoodToUserHistory,removeFoodFromUserHistory,getDayStats,getAllFoodFromDb,test,getUserId}

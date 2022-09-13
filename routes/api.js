@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const{createUser,addFoodToDb,deleteFoodFromDb,updateFoodFromDb,addFoodToUserHistory,removeFoodFromUserHistory,getDayStats,getAllFoodFromDb,test} = require('../controller/api')
+const{createUser,addFoodToDb,deleteFoodFromDb,updateFoodFromDb,addFoodToUserHistory,removeFoodFromUserHistory,getDayStats,getAllFoodFromDb,test,getUserId} = require('../controller/api')
 
 router.post("/create-user",createUser)
+router.post("/get-user",getUserId)
 
 router.get("/db-food",getAllFoodFromDb)
 router.post("/db-food",addFoodToDb)
