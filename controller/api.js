@@ -204,9 +204,10 @@ const addFoodToUserHistory = async (req,res)=>{
 const removeFoodFromUserHistory = async (req,res)=>{
         try {
             const {userId,logId} = req.body
-    
+
+
+
             if(!logId || !userId){
-                console.log("ase")
                 return res.status(400).send(ERRORMSG.missingParam)
             }
 
@@ -253,7 +254,8 @@ const removeFoodFromUserHistory = async (req,res)=>{
             console.log(error)
             return res.status(400).send(ERRORMSG.error)
         }
-}
+    }
+
 
 
 const getDayStats = async (req,res)=>{
