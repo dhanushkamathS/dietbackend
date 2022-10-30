@@ -10,7 +10,7 @@ const app = express();
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
-const URI = "mongodb+srv://dhanush:123mongodbD@cluster0.cbldq.mongodb.net/dietdb?retryWrites=true&w=majority"
+const URI = "mongodb+srv://dhanush:dhanush@cluster0.cbldq.mongodb.net/dietdb?retryWrites=true&w=majority"
 
 mongoose
   .connect(URI)
