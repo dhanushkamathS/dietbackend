@@ -25,6 +25,9 @@ mongoose
 
 app.use("/api", require("./routes/api"));
 
+app.get("/",(req,res)=>{
+  res.send("welcome to dietapp")
+})
 
 app.listen(process.env.PORT, () => {
   console.log(process.env.PORT)
